@@ -2,7 +2,7 @@ package Account;
 
 public class NullAccount extends Account{
     public NullAccount() {
-        super("NULLACC", "-1", 0);
+        super("NULLACC", 0);
     }
 
     @Override

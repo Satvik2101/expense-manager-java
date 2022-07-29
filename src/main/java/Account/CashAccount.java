@@ -2,8 +2,8 @@ package Account;
 
 public class CashAccount extends Account{
 
-    public CashAccount(String name, String id, double amount) {
-        super(name, id, amount);
+    public CashAccount(String name, double amount) {
+        super(name, amount);
     }
 
     @Override
