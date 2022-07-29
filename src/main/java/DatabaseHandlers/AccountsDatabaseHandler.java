@@ -17,4 +17,9 @@ public abstract class AccountsDatabaseHandler {
     public abstract boolean recordTransaction(Transaction transaction);
 //    public abstract ArrayList<Transaction> getAccountTransactions(Account account);
     public abstract boolean updateAccountValue(Account account);
+
+    public abstract ArrayList<Transaction> fetchTransactions(int page,int count);
+
+    public abstract boolean addAccount(Account acc);
+
 }

@@ -53,13 +53,14 @@ public class Transaction {
     String name;
     Timestamp timestamp;
     String description;
-
+    final double amount;
     public Transaction(
-                       UUID senderId,
-                       UUID receiverId,
-                       String name,
-                       Timestamp timestamp,
-                       String description) {
+            UUID senderId,
+            UUID receiverId,
+            String name,
+            Timestamp timestamp,
+            String description, double amount) {
+        this.amount = amount;
         this.id = UUID.randomUUID();
         this.senderId = senderId;
         this.receiverId = receiverId;
