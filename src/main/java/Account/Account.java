@@ -8,27 +8,40 @@ public abstract class Account {
     public double amount;
 
     //    static int x =5;
+    Account(UUID id, String name, double amount){
+        this.id = id;
+        this.name = name;
+        this.amount = amount;
+    }
     public Account(String name, double amount) {
 //        nullAccount = new NullAccount();
-        this.name = name;
-        this.id = UUID.randomUUID();
-
-        this.amount = amount;
+//        this.name = name;
+//        this.id = UUID.randomUUID();
+//
+//        this.amount = amount;
+        this(UUID.randomUUID(),name,amount);
     }
 
     public Account(String name) {
 
         this(name, 0);
     }
+    public Account(Account acc){
+        this(acc.id,acc.name,acc.amount);
+    }
 
-    abstract double withdraw(double amountToMove);
+    public abstract double withdraw(double amountToMove);
 
-    abstract double deposit(double amountToAdd);
+    public abstract double deposit(double amountToAdd);
+
+    public abstract double setValue(double value);
 
 //    static void transfer(Account receiver, Account sender, double amtToTransfer){
 //        receiver.addToAccount(amtToTransfer);
 //        sender.moveFromAccount(amtToTransfer);
 //    }
+
+    public abstract Account makeCopy();
 
 //    static NullAccount nullAccount = new NullAccount();
 }

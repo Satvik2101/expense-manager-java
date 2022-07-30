@@ -15,9 +15,9 @@ public abstract class AccountsManager {
     public static NullAccount nullAccount = new NullAccount();
       final AccountsDatabaseHandler databaseHandler;
     final Connection conn;
-    Map<UUID,Account> accountMap = new HashMap<UUID, Account>();
+    Map<UUID,Account> accountMap = new HashMap<>();
 
-    static int countPerPage = 10;
+    static int countPerPage = 3;
     static int page = 1;
     //are more transactions left?
     public static boolean moreTransactions = true;

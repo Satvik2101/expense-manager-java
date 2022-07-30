@@ -21,5 +21,7 @@ public abstract class AccountsDatabaseHandler {
     public abstract ArrayList<Transaction> fetchTransactions(int page,int count);
 
     public abstract boolean addAccount(Account acc);
+    public abstract ArrayList<Account> fetchAccounts();
+
 
 }

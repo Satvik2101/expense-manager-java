@@ -6,12 +6,22 @@ public class NullAccount extends Account{
     }
 
     @Override
-    double withdraw(double amountToMove) {
+    public double withdraw(double amountToMove) {
         return 0;
     }
 
     @Override
-    double deposit(double amountToAdd) {
+    public double deposit(double amountToAdd) {
         return 0;
+    }
+
+    @Override
+    public double setValue(double value) {
+        return 0;
+    }
+
+    @Override
+    public NullAccount makeCopy() {
+        return this;
     }
 }
