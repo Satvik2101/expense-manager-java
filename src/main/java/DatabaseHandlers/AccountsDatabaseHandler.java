@@ -7,11 +7,11 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 public abstract class AccountsDatabaseHandler {
-     final Connection conn;
+//     final Connection conn;
 //    ArrayList<Transaction> transactions;
 
-    protected AccountsDatabaseHandler(Connection conn) {
-        this.conn = conn;
+    protected AccountsDatabaseHandler() {
+
     }
 
     public abstract boolean recordTransaction(Transaction transaction);
