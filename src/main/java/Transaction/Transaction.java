@@ -71,4 +71,8 @@ public class Transaction {
     public boolean isOfAccount(Account acc){
         return (senderId == acc.id || receiverId == acc.id);
     }
+
+    public double getAmount() {
+        return amount;
+    }
 }
