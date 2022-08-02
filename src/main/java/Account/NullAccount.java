@@ -1,6 +1,12 @@
 package Account;
 
+import java.util.UUID;
+
 public class NullAccount extends Account{
+
+    public NullAccount(UUID id){
+        super(id,"NULLACC",0);
+    }
     public NullAccount() {
         super("NULLACC", 0);
     }
@@ -18,6 +24,11 @@ public class NullAccount extends Account{
     @Override
     public double setValue(double value) {
         return 0;
+    }
+
+    @Override
+    public AccountType getType() {
+        return AccountType.Null;
     }
 
     @Override

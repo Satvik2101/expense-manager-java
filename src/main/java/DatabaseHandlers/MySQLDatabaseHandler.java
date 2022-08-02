@@ -3,10 +3,9 @@ package DatabaseHandlers;
 import Account.Account;
 import Transaction.Transaction;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class MySQLDatabaseHandler extends DatabaseHandler {
     final Connection conn;
@@ -32,7 +31,28 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
 
     @Override
     public ArrayList<Account> fetchAccounts() {
-        return null;
+        ArrayList<Account> ans = new ArrayList<>();
+        String sql = "Select * from accounts";
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()){
+                String name = rs.getString("name");
+                String rawID = rs.getString("id");
+                double amount = rs.getDouble("amount");
+                String type = rs.getString("type");
+
+                UUID id = UUID.fromString(rawID);
+                Account acc = Account.createAccount(id,name,amount,type);
+                ans.add(acc);
+            }
+            return ans;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override

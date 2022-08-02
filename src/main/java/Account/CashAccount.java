@@ -1,7 +1,12 @@
 package Account;
 
+import java.util.UUID;
+
 public class CashAccount extends Account{
 
+    public CashAccount(UUID id, String name, double amount){
+        super (id,name,amount);
+    }
     public CashAccount(String name, double amount) {
         super(name, amount);
     }
@@ -24,6 +29,11 @@ public class CashAccount extends Account{
     public double setValue(double value) {
         amount= value;
         return amount;
+    }
+
+    @Override
+    public AccountType getType() {
+        return AccountType.Cash;
     }
 
     @Override

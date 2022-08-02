@@ -36,12 +36,24 @@ public abstract class Account {
 
     public abstract double setValue(double value);
 
+    public abstract AccountType getType();
 //    static void transfer(Account receiver, Account sender, double amtToTransfer){
 //        receiver.addToAccount(amtToTransfer);
 //        sender.moveFromAccount(amtToTransfer);
 //    }
 
     public abstract Account copy();
+
+    public static Account createAccount(UUID id,String name, double amount,String type){
+        AccountType accType = AccountType.fromString(type);
+        switch (accType){
+            case Cash:
+                return new CashAccount(id,name,amount);
+            case Null:
+                return new NullAccount(id);
+        }
+        return null;
+    }
 
 //    static NullAccount nullAccount = new NullAccount();
 }
