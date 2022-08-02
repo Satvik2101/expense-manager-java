@@ -29,17 +29,20 @@ public class Main {
                                                           "b6famsatvik55");
 
             AccountsManager manager = new MySQLAccountsManager(conn);
-            Scanner in = new Scanner(System.in);
-            System.out.println("Enter name");
-            String name = in.next();
-            System.out.println("Enter amt");
-            double amount = in.nextDouble();
+//            Scanner in = new Scanner(System.in);
+//            System.out.println("Enter name");
+//            String name = in.next();
+//            System.out.println("Enter amt");
+//            double amount = in.nextDouble();
 
-            manager.addAccount(name,amount);
+//            manager.addAccount(name,amount);
             ArrayList<Account> accounts = manager.getAccounts();
             for (Account ac:accounts){
                 System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
             }
+            Account ac = AccountsManager.nullAccount;
+            System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
+
             System.out.println("DONE");
 
         } catch (SQLException e) {

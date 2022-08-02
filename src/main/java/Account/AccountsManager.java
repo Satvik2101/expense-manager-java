@@ -29,18 +29,24 @@ public abstract class AccountsManager {
         }
         return ans;
     }
+
     public AccountsManager(DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
 //        this.conn = conn;
         transactions = new TreeSet<>();
         fetchAccounts();
         fetchMoreTransactions();
+//        addAccount(nullAccount);
 //        System.out.println("HERE");
     }
 
-    void addAccount(Account acc){
+    void putAccountInAccMap(Account acc){
         accountMap.put(acc.id,acc);
+    }
+    void addAccount(Account acc){
+        putAccountInAccMap(acc);
         databaseHandler.addAccount(acc);
+
     }
 
 
@@ -80,6 +86,11 @@ public abstract class AccountsManager {
     public void fetchAccounts(){
         ArrayList<Account> newAccounts = databaseHandler.fetchAccounts();
         if (newAccounts==null)return;
-        for (Account acc:newAccounts) addAccount(acc);
+        for (Account acc:newAccounts){
+            putAccountInAccMap(acc);
+            if (acc instanceof NullAccount){
+                nullAccount = (NullAccount)acc;
+            }
+        }
     }
 }
