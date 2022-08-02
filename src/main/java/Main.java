@@ -1,37 +1,52 @@
+import Account.Account;
 import Account.AccountsManager;
-import Account.AccountsManagerTest;
+import Account.CashAccount;
+import Account.MySQLAccountsManager;
 import Transaction.Transaction;
-import com.mysql.cj.jdbc.ConnectionImpl;
 
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+//    static AccountsManager manager = new ();
 
-    static void outputTr(Transaction tr){
-        System.out.println(
-                tr.getSenderId()+" "+tr.getReceiverId()+" "+tr.getName()+" "+tr.getDescription()+" "+tr.getTimestamp().toString()+" "+tr.getAmount()
-        );
-    }
+//    static void outputTr(Transaction tr) {
+//        System.out.println(
+//                manager.getNameOfUUID(tr.getSenderId()) + " " + manager.getNameOfUUID(tr.getReceiverId()) + " " + tr.getName() + " " + tr.getDescription() + " " + tr.getTimestamp()
+//                                                                                                                                                                     .toString() + " " + tr.getAmount()
+//        );
+//    }
+
     public static void main(String[] args) {
 //        Connection connection =null;
-        AccountsManager manager = new AccountsManagerTest();
-        HashMap<String,UUID> namesToIds = manager.getAccountNamesWithIDs();
-        for (Map.Entry<String,UUID> entry:namesToIds.entrySet()){
-            System.out.println(entry.getValue()+" -> "+entry.getKey());
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/expense_manager","root",
+                                                          "b6famsatvik55");
+
+            AccountsManager manager = new MySQLAccountsManager(conn);
+            Scanner in = new Scanner(System.in);
+            System.out.println("Enter name");
+            String name = in.next();
+            System.out.println("Enter amt");
+            double amount = in.nextDouble();
+
+            manager.addAccount(name,amount);
+            ArrayList<Account> accounts = manager.getAccounts();
+            for (Account ac:accounts){
+                System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
+            }
+            System.out.println("DONE");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        System.out.println();
-//        System.out.println("hello world");
-        for (Transaction tr: manager.transactions){
-            outputTr(tr);
-        }
-        System.out.println();
-        manager.fetchMoreTransactions();
-        for (Transaction tr: manager.transactions){
-            outputTr(tr);
-        }
+//
+
     }
 
 }
