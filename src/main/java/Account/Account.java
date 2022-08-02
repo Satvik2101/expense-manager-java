@@ -55,5 +55,10 @@ public abstract class Account {
         return null;
     }
 
+    public static Account createAccount(String name, double amount,String type){
+        UUID id = UUID.randomUUID();
+        return createAccount(id,name,amount,type);
+    }
+
 //    static NullAccount nullAccount = new NullAccount();
 }

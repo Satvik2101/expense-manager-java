@@ -49,11 +49,24 @@ public abstract class AccountsManager {
 
     }
 
+    public boolean updateAccountValue(UUID id, double newAmount){
+        Account acc = accountMap.get(id);
+        //TODO:Throw custom exceptions here
+        if (acc==null)return false;
+        if (acc.getType()==AccountType.Null)return false;
+        double oldAmount = acc.amount;
+        acc.setValue(newAmount);
+        if (!databaseHandler.updateAccountValue(acc)){
+            acc.setValue(oldAmount);
+            return false;
+        }
+        return true;
+    }
 
 
     //TODO: Change later to get account type as well
-    public void addAccount(String name, double amount){
-        Account acc = new CashAccount(name,amount);
+    public void createNewAccount(String name, double amount,String type){
+        Account acc = Account.createAccount(name,amount,type);
         addAccount(acc);
     }
     //this should record values in database:

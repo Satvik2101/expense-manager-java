@@ -21,7 +21,21 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
 
     @Override
     public boolean updateAccountValue(Account account) {
-        return false;
+        String id = account.id.toString();
+        double amount = account.amount;
+        String sql = "update accounts set amount=? where id=?";
+        try(
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ) {
+            stmt.setDouble(1,amount);
+            stmt.setString(2,id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+//        return false;
     }
 
     @Override
@@ -33,10 +47,15 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
     public ArrayList<Account> fetchAccounts() {
         ArrayList<Account> ans = new ArrayList<>();
         String sql = "Select * from accounts";
-        try {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
 
+        //try-with-resources
+        try(
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                )
+        {
+
+            if (rs==null) return ans;
             while (rs.next()){
                 String name = rs.getString("name");
                 String rawID = rs.getString("id");
@@ -49,6 +68,7 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
             }
             return ans;
         } catch (SQLException e) {
+//            JDBCTuto
             e.printStackTrace();
             return null;
         }
@@ -59,12 +79,14 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
     public boolean addAccount(Account acc) {
         String sql ="insert into accounts (id,name,amount) values (?,?,?)";
 
-        try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        try
+                (  PreparedStatement stmt = conn.prepareStatement(sql);){
+
             stmt.setString(1,acc.id.toString());
             stmt.setString(2,acc.name);
             stmt.setDouble(3,acc.amount);
             stmt.executeUpdate();
+            stmt.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
 //    static AccountsManager manager = new ();
@@ -40,8 +41,16 @@ public class Main {
             for (Account ac:accounts){
                 System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
             }
-            Account ac = AccountsManager.nullAccount;
-            System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
+            Scanner in = new Scanner(System.in);
+            System.out.println("Enter idx");
+            int idx = in.nextInt();
+            UUID id = accounts.get(idx).id;
+            manager.updateAccountValue(id,5000);
+            System.out.println(accounts.get(idx).amount);
+            accounts = manager.getAccounts();
+            for (Account ac:accounts){
+                System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
+            }
 
             System.out.println("DONE");
 
