@@ -6,11 +6,11 @@ import Transaction.Transaction;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-public abstract class AccountsDatabaseHandler {
+public abstract class DatabaseHandler {
 //     final Connection conn;
 //    ArrayList<Transaction> transactions;
 
-    protected AccountsDatabaseHandler() {
+    protected DatabaseHandler() {
 
     }
 

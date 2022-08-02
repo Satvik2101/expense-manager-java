@@ -1,15 +1,10 @@
 package Account;
 
-import DatabaseHandlers.AccountsDatabaseHandler;
-import DatabaseHandlers.AccountsDatabaseHandlerTest;
-
-import java.sql.Connection;
-import java.sql.Timestamp;
-import java.util.UUID;
+import DatabaseHandlers.DatabaseHandlerTest;
 
 public class AccountsManagerTest extends  AccountsManager{
     public AccountsManagerTest() {
-        super(new AccountsDatabaseHandlerTest());
+        super(new DatabaseHandlerTest());
 //        init();
     }
 }

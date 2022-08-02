@@ -1,64 +1,55 @@
 package Account;
 
-import DatabaseHandlers.AccountsDatabaseHandler;
+import DatabaseHandlers.DatabaseHandler;
 import Transaction.Transaction;
 
-import java.sql.Connection;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 //import JOption
 
 public abstract class AccountsManager {
     public static NullAccount nullAccount = new NullAccount();
-    final AccountsDatabaseHandler databaseHandler;
+    final DatabaseHandler databaseHandler;
 //    final Connection conn;
     Map<UUID,Account> accountMap = new HashMap<>();
 
     static int countPerPage = 3;
     static int page = 1;
-    //are more transactions left?
-    public static boolean moreTransactions = true;
 
+    public String getNameOfUUID(UUID id){
+        if (accountMap.get(id)==null)return null;
+        return accountMap.get(id).name;
+    }
     //store transactions here, don't fetch all at once, use paging
-    public ArrayList<Transaction> transactions;
-    public HashMap<String,UUID> getAccountNamesWithIDs(){
-        HashMap<String,UUID> ans = new HashMap<>();
+    public SortedSet<Transaction> transactions;
+    public ArrayList<Account> getAccounts(){
+        ArrayList<Account> ans = new ArrayList<>();
         for (Map.Entry<UUID, Account> element:accountMap.entrySet()){
-            ans.put(element.getValue().name,element.getKey());
+            ans.add(element.getValue());
         }
         return ans;
     }
-    public AccountsManager(AccountsDatabaseHandler databaseHandler) {
+    public AccountsManager(DatabaseHandler databaseHandler) {
         this.databaseHandler = databaseHandler;
 //        this.conn = conn;
-        transactions = new ArrayList<>();
+        transactions = new TreeSet<>();
         fetchAccounts();
         fetchMoreTransactions();
 //        System.out.println("HERE");
     }
 
-//    void transfer(Account sender, Account receiver,double amount){
-//        if (sender==receiver)return;
-//        sender.withdraw(amount);
-//        receiver.deposit(amount);
-//
-//    }
-
     void addAccount(Account acc){
         accountMap.put(acc.id,acc);
+        databaseHandler.addAccount(acc);
     }
 
-//    void transfer(UUID senderId, UUID receiverId, double amount){
-//        Account sender = accountMap.getOrDefault(senderId,nullAccount);
-//        Account receiver = accountMap.getOrDefault(receiverId,nullAccount);
-//
-////        if (sender==receiver)return;
-//        transfer(sender,receiver,amount);
-//    }
 
+
+    //TODO: Change later to get account type as well
+    public void addAccount(String name, double amount){
+        Account acc = new CashAccount(name,amount);
+        addAccount(acc);
+    }
     //this should record values in database:
     //add to list of transactions, and update amount in accounts
     //if all of those are successful only then should local values
@@ -69,23 +60,26 @@ public abstract class AccountsManager {
     ){
         Transaction tr = new Transaction(senderId, receiverId, name, timestamp, description, amount);
         databaseHandler.recordTransaction(tr);
+        int compare = tr.getTimestamp().compareTo( transactions.last().getTimestamp());
+         System.out.println(compare);
+        if (transactions.isEmpty() ||(compare >=0)){
+//            System.out.println("here");
+            transactions.add(tr);
+        }
      }
 
     //fetch next page of transactions
-    public boolean fetchMoreTransactions(){
-        if (!moreTransactions) return false;
+    public void fetchMoreTransactions(){
         ArrayList<Transaction> newTransactions = databaseHandler.fetchTransactions(page,countPerPage);
 //        System.out.println(newTransactions.size());
-        if (newTransactions==null || newTransactions.size()<countPerPage){
-            moreTransactions = false;
-        }
-        if (newTransactions==null || newTransactions.isEmpty())return false;
+        if (newTransactions==null || newTransactions.isEmpty())return ;
         transactions.addAll(newTransactions);
+
         page++;
-        return true;
     }
     public void fetchAccounts(){
         ArrayList<Account> newAccounts = databaseHandler.fetchAccounts();
+        if (newAccounts==null)return;
         for (Account acc:newAccounts) addAccount(acc);
     }
 }

@@ -41,7 +41,7 @@ public abstract class Account {
 //        sender.moveFromAccount(amtToTransfer);
 //    }
 
-    public abstract Account makeCopy();
+    public abstract Account copy();
 
 //    static NullAccount nullAccount = new NullAccount();
 }

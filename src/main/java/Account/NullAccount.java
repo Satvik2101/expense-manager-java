@@ -21,7 +21,7 @@ public class NullAccount extends Account{
     }
 
     @Override
-    public NullAccount makeCopy() {
+    public NullAccount copy() {
         return this;
     }
 }

@@ -27,7 +27,7 @@ public class CashAccount extends Account{
     }
 
     @Override
-    public CashAccount makeCopy() {
+    public CashAccount copy() {
         return new CashAccount(this);
     }
 }

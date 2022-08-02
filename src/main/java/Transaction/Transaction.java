@@ -5,7 +5,7 @@ import Account.Account;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-public class Transaction {
+public class Transaction implements Comparable <Transaction>{
     final UUID id;
     UUID senderId;
     UUID receiverId;
@@ -74,5 +74,18 @@ public class Transaction {
 
     public double getAmount() {
         return amount;
+    }
+
+
+    public Transaction copy(){
+//        Transaction clone = (Transaction) Object.clone();
+        return new Transaction(senderId,receiverId,name,timestamp,description,amount);
+    }
+
+    @Override
+    public int compareTo(Transaction o) {
+        int timeCompare= o.timestamp.compareTo(timestamp);
+        if (timeCompare!=0)return timeCompare;
+        return id.compareTo(o.id);
     }
 }

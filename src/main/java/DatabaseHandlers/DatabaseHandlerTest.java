@@ -5,17 +5,17 @@ import Account.AccountsManager;
 import Account.CashAccount;
 import Transaction.Transaction;
 
-import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.TreeSet;
 import java.util.UUID;
 
-public class AccountsDatabaseHandlerTest extends AccountsDatabaseHandler {
+public class DatabaseHandlerTest extends DatabaseHandler {
 
     ArrayList<Account> dummyAccounts = new ArrayList<>();
-    ArrayList<Transaction> dummyTransactions = new ArrayList<>();
+    TreeSet<Transaction> dummyTransactions = new TreeSet<Transaction>();
 
-    public AccountsDatabaseHandlerTest() {
+    public DatabaseHandlerTest() {
         super();
         init();
     }
@@ -131,8 +131,9 @@ public class AccountsDatabaseHandlerTest extends AccountsDatabaseHandler {
     public ArrayList<Transaction> fetchTransactions(int page, int count) {
         int skip = (page-1)*count;
         ArrayList<Transaction> ans = new ArrayList<>();
-        for (int i =skip;i<Math.min(dummyTransactions.size(),skip+count);i++){
-            ans.add(dummyTransactions.get(i));
+        ArrayList<Transaction> dummyTrAsList = new ArrayList<>(dummyTransactions);
+        for (int i =skip;i<Math.min(dummyTrAsList.size(),skip+count);i++){
+            ans.add(dummyTrAsList.get(i).copy());
         }
         return ans;
     }
@@ -147,7 +148,7 @@ public class AccountsDatabaseHandlerTest extends AccountsDatabaseHandler {
     public ArrayList<Account> fetchAccounts(){
         ArrayList<Account> ans= new ArrayList<Account>();
         for (Account acc:dummyAccounts){
-            ans.add(acc.makeCopy());
+            ans.add(acc.copy());
         }
         return ans;
     }
