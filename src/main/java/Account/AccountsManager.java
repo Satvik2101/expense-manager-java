@@ -56,7 +56,7 @@ public abstract class AccountsManager {
         if (acc.getType()==AccountType.Null)return false;
         double oldAmount = acc.amount;
         acc.setValue(newAmount);
-        if (!databaseHandler.updateAccountValue(acc)){
+        if (!databaseHandler.updateAccountValue(id,newAmount)){
             acc.setValue(oldAmount);
             return false;
         }
@@ -79,9 +79,13 @@ public abstract class AccountsManager {
     ){
         Transaction tr = new Transaction(senderId, receiverId, name, timestamp, description, amount);
         databaseHandler.recordTransaction(tr);
+        if (transactions.isEmpty()){
+            transactions.add(tr);
+            return;
+        }
         int compare = tr.getTimestamp().compareTo( transactions.last().getTimestamp());
          System.out.println(compare);
-        if (transactions.isEmpty() ||(compare >=0)){
+        if ((compare >=0)){
 //            System.out.println("here");
             transactions.add(tr);
         }

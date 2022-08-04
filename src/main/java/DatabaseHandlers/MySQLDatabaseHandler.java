@@ -30,7 +30,10 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
                 stmt.setString(5,tr.getDescription());
                 stmt.setTimestamp(6,tr.getTimestamp());
                 stmt.setDouble(7,tr.getAmount());
-
+                stmt.executeUpdate();
+                updateAccountValue(tr.getSenderId(),tr.getAmount(),conn,UpdateMode.DECR);
+                updateAccountValue(tr.getReceiverId(),tr.getAmount(),conn,UpdateMode.INCR);
+                conn.commit();
             } catch (SQLException throwables) {
                 try {
                     conn.rollback();
@@ -49,23 +52,45 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
     }
 
     @Override
-    public boolean updateAccountValue(Account account) {
-        String id = account.id.toString();
-        double amount = account.amount;
-        String sql = "update accounts set amount=? where id=?";
+    public boolean updateAccountValue(UUID id, double newAmount ) {
+
         try(
-                Connection conn = DriverManager.getConnection(connUrl);
-                PreparedStatement stmt = conn.prepareStatement(sql)
+                Connection conn = DriverManager.getConnection(connUrl)
+//                PreparedStatement stmt = conn.prepareStatement(sql)
                 ) {
-            stmt.setDouble(1,amount);
-            stmt.setString(2,id);
-            stmt.executeUpdate();
+            updateAccountValue(id,newAmount,conn);
             return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return false;
         }
 //        return false;
+    }
+    void updateAccountValue(UUID uuid, double value ,Connection conn) throws SQLException {
+        updateAccountValue(uuid,value,conn,UpdateMode.SET);
+    }
+
+    void updateAccountValue(UUID uuid, double value ,Connection conn,UpdateMode mode) throws SQLException {
+        String id = uuid.toString();
+
+        String sql = getAccountUpdateStatement(mode);
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setDouble(1,value);
+        stmt.setString(2,id);
+        stmt.executeUpdate();
+        stmt.close();
+    }
+
+    String getAccountUpdateStatement(UpdateMode mode){
+        switch (mode){
+            case SET:
+                return "update accounts set amount=? where id=?";
+            case INCR:
+                return "update accounts set amount=amount+? where id=?";
+            case DECR:
+                return "update accounts set amount=amount-? where id=?";
+        }
+        return null;
     }
 
     @Override
@@ -99,7 +124,7 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
             }
             return ans;
         } catch (SQLException e) {
-//            JDBCTuto
+//
             e.printStackTrace();
             return null;
         }

@@ -114,16 +114,16 @@ public class DatabaseHandlerTest extends DatabaseHandler {
 
 
     @Override
-    public boolean updateAccountValue(Account account) {
+    public boolean updateAccountValue(UUID id, double newAmount) {
         int idx =-1;
         for (int i=0;i<dummyAccounts.size();i++){
-            if (dummyAccounts.get(i).id==account.id){
+            if (dummyAccounts.get(i).id==id){
                 idx = i;
                 break;
             }
         }
         if (idx==-1)return false;
-        dummyAccounts.get(idx).setValue(account.amount);
+        dummyAccounts.get(idx).setValue(newAmount);
         return true;
     }
 

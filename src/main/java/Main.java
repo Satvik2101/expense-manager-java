@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,12 +17,11 @@ import java.util.UUID;
 public class Main {
 //    static AccountsManager manager = new ();
 
-//    static void outputTr(Transaction tr) {
-//        System.out.println(
-//                manager.getNameOfUUID(tr.getSenderId()) + " " + manager.getNameOfUUID(tr.getReceiverId()) + " " + tr.getName() + " " + tr.getDescription() + " " + tr.getTimestamp()
-//                                                                                                                                                                     .toString() + " " + tr.getAmount()
-//        );
-//    }
+    static void outputTr(Transaction tr) {
+        System.out.println(
+                (tr.getSenderId()) + " " + (tr.getReceiverId()) + " " + tr.getName() + " " + tr.getDescription() + " " + tr.getTimestamp().toString() + " " + tr.getAmount()
+        );
+    }
 
     public static void main(String[] args) {
 //        Connection connection =null;
@@ -40,14 +40,26 @@ public class Main {
             System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
         }
         Scanner in = new Scanner(System.in);
-        System.out.println("Enter idx");
-        int idx = in.nextInt();
-        UUID id = accounts.get(idx).id;
-        manager.updateAccountValue(id,1200);
-        System.out.println(accounts.get(idx).amount);
+        System.out.println("Enter sender idx");
+        int sIdx = in.nextInt();
+        System.out.println("Enter receiver idx");
+        int rIdx = in.nextInt();
+        System.out.println("Enter amount");
+        double amount = in.nextDouble();
+        System.out.println("Enter name");
+        String name = in.next();
+        Timestamp time = Timestamp.from(Instant.now());
+        manager.recordTransaction(accounts.get(sIdx).id,accounts.get(rIdx).id,amount,name,null,time);
+
+//        UUID id = accounts.get(idx).id;
+//        manager.updateAccountValue(id,1200);
+//        System.out.println(accounts.get(idx).amount);
         accounts = manager.getAccounts();
         for (Account ac:accounts){
             System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
+        }
+        for (Transaction tr:manager.transactions){
+            outputTr(tr);
         }
 
         System.out.println("DONE");
