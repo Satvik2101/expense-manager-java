@@ -25,11 +25,9 @@ public class Main {
 
     public static void main(String[] args) {
 //        Connection connection =null;
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/expense_manager","root",
-                                                          "b6famsatvik55");
-
-            AccountsManager manager = new MySQLAccountsManager(conn);
+        //            Connection conn = DriverManager.getConnection("jdbc:mysql://root:b6famsatvik55@localhost:3306/expense_manager");
+        String url = "jdbc:mysql://root:b6famsatvik55@localhost:3306/expense_manager";
+        AccountsManager manager = new MySQLAccountsManager(url);
 //            Scanner in = new Scanner(System.in);
 //            System.out.println("Enter name");
 //            String name = in.next();
@@ -37,27 +35,24 @@ public class Main {
 //            double amount = in.nextDouble();
 
 //            manager.addAccount(name,amount);
-            ArrayList<Account> accounts = manager.getAccounts();
-            for (Account ac:accounts){
-                System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
-            }
-            Scanner in = new Scanner(System.in);
-            System.out.println("Enter idx");
-            int idx = in.nextInt();
-            UUID id = accounts.get(idx).id;
-            manager.updateAccountValue(id,5000);
-            System.out.println(accounts.get(idx).amount);
-            accounts = manager.getAccounts();
-            for (Account ac:accounts){
-                System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
-            }
-
-            System.out.println("DONE");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        ArrayList<Account> accounts = manager.getAccounts();
+        for (Account ac:accounts){
+            System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
         }
-//
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter idx");
+        int idx = in.nextInt();
+        UUID id = accounts.get(idx).id;
+        manager.updateAccountValue(id,1200);
+        System.out.println(accounts.get(idx).amount);
+        accounts = manager.getAccounts();
+        for (Account ac:accounts){
+            System.out.println(ac.name+ " "+ac.id+" "+ac.amount);
+        }
+
+        System.out.println("DONE");
+
+        //
 
     }
 

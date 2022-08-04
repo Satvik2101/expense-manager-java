@@ -8,15 +8,44 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class MySQLDatabaseHandler extends DatabaseHandler {
-    final Connection conn;
+    final String connUrl;
 
-    public MySQLDatabaseHandler(Connection conn) {
-        this.conn = conn;
+    public MySQLDatabaseHandler(String url) {
+        this.connUrl = url;
     }
 
     @Override
-    public boolean recordTransaction(Transaction transaction) {
-        return false;
+    public boolean recordTransaction(Transaction tr) {
+        String sql = "insert into transactions (id,sender_id,receiver_id,name,description,time,amount) values (?,?,?," +
+                "?,?,?,?)";
+
+        try  (Connection conn = DriverManager.getConnection(connUrl))
+        {
+            try(PreparedStatement stmt = conn.prepareStatement(sql)){
+                conn.setAutoCommit(false);
+                stmt.setString(1,tr.getId().toString());
+                stmt.setString(2,tr.getSenderId().toString());
+                stmt.setString(3,tr.getReceiverId().toString());
+                stmt.setString(4,tr.getName());
+                stmt.setString(5,tr.getDescription());
+                stmt.setTimestamp(6,tr.getTimestamp());
+                stmt.setDouble(7,tr.getAmount());
+
+            } catch (SQLException throwables) {
+                try {
+                    conn.rollback();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                throwables.printStackTrace();
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -25,7 +54,8 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
         double amount = account.amount;
         String sql = "update accounts set amount=? where id=?";
         try(
-                PreparedStatement stmt = conn.prepareStatement(sql);
+                Connection conn = DriverManager.getConnection(connUrl);
+                PreparedStatement stmt = conn.prepareStatement(sql)
                 ) {
             stmt.setDouble(1,amount);
             stmt.setString(2,id);
@@ -50,8 +80,9 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
 
         //try-with-resources
         try(
+                Connection conn = DriverManager.getConnection(connUrl);
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
+                ResultSet rs = stmt.executeQuery(sql)
                 )
         {
 
@@ -80,7 +111,9 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
         String sql ="insert into accounts (id,name,amount) values (?,?,?)";
 
         try
-                (  PreparedStatement stmt = conn.prepareStatement(sql);){
+                (
+                        Connection conn = DriverManager.getConnection(connUrl);
+                        PreparedStatement stmt = conn.prepareStatement(sql)){
 
             stmt.setString(1,acc.id.toString());
             stmt.setString(2,acc.name);

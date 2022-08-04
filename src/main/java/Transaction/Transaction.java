@@ -9,6 +9,9 @@ public class Transaction implements Comparable <Transaction>{
     final UUID id;
     UUID senderId;
     UUID receiverId;
+    public UUID getId(){
+        return id;
+    }
 
     public UUID getSenderId() {
         return senderId;
