@@ -33,7 +33,10 @@ public class Main {
 //            String name = in.next();
 //            System.out.println("Enter amt");
 //            double amount = in.nextDouble();
-
+        for (Transaction tr:manager.transactions){
+            outputTr(tr);
+        }
+        System.out.println("---------------------------------------");
 //            manager.addAccount(name,amount);
         ArrayList<Account> accounts = manager.getAccounts();
         for (Account ac:accounts){

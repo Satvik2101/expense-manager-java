@@ -73,15 +73,31 @@ public abstract class AccountsManager {
     //add to list of transactions, and update amount in accounts
     //if all of those are successful only then should local values
     //be updated.
-     public void recordTransaction(
+     public boolean recordTransaction(
             UUID senderId, UUID receiverId, double amount,
             String name, String description, Timestamp timestamp
     ){
         Transaction tr = new Transaction(senderId, receiverId, name, timestamp, description, amount);
-        databaseHandler.recordTransaction(tr);
+        Account sender = accountMap.get(senderId);
+        Account receiver = accountMap.get(receiverId);
+        if (sender==receiver) return false;
+        if (sender==null ||receiver==null)return false;
+
+        double oldSValue = sender.amount;
+        double oldRValue = receiver.amount;
+
+        sender.setValue(oldSValue-amount);
+        receiver.setValue(oldRValue+amount);
+
+
+        if (!databaseHandler.recordTransaction(tr,sender.amount,receiver.amount)) {
+            sender.setValue(oldSValue);
+            receiver.setValue(oldRValue);
+            return false;
+        }
         if (transactions.isEmpty()){
             transactions.add(tr);
-            return;
+//            return true;
         }
         int compare = tr.getTimestamp().compareTo( transactions.last().getTimestamp());
          System.out.println(compare);
@@ -89,6 +105,7 @@ public abstract class AccountsManager {
 //            System.out.println("here");
             transactions.add(tr);
         }
+        return true;
      }
 
     //fetch next page of transactions

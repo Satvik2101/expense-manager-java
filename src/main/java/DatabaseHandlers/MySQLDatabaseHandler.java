@@ -15,7 +15,7 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
     }
 
     @Override
-    public boolean recordTransaction(Transaction tr) {
+    public boolean recordTransaction(Transaction tr,double newSenderAmount, double newReceiverAmount) {
         String sql = "insert into transactions (id,sender_id,receiver_id,name,description,time,amount) values (?,?,?," +
                 "?,?,?,?)";
 
@@ -31,8 +31,8 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
                 stmt.setTimestamp(6,tr.getTimestamp());
                 stmt.setDouble(7,tr.getAmount());
                 stmt.executeUpdate();
-                updateAccountValue(tr.getSenderId(),tr.getAmount(),conn,UpdateMode.DECR);
-                updateAccountValue(tr.getReceiverId(),tr.getAmount(),conn,UpdateMode.INCR);
+                setAccountValue(tr.getSenderId(),newSenderAmount,conn);
+                setAccountValue(tr.getReceiverId(),newReceiverAmount,conn);
                 conn.commit();
             } catch (SQLException throwables) {
                 try {
@@ -58,7 +58,7 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
                 Connection conn = DriverManager.getConnection(connUrl)
 //                PreparedStatement stmt = conn.prepareStatement(sql)
                 ) {
-            updateAccountValue(id,newAmount,conn);
+            setAccountValue(id,newAmount,conn);
             return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -66,7 +66,7 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
         }
 //        return false;
     }
-    void updateAccountValue(UUID uuid, double value ,Connection conn) throws SQLException {
+    void setAccountValue(UUID uuid, double value ,Connection conn) throws SQLException {
         updateAccountValue(uuid,value,conn,UpdateMode.SET);
     }
 

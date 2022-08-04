@@ -22,7 +22,7 @@ public class DatabaseHandlerTest extends DatabaseHandler {
 
 
     @Override
-    public boolean recordTransaction(Transaction tr) {
+    public boolean recordTransaction(Transaction tr,double x,double y) {
 //       //update amounts in db in real
         dummyTransactions.add(tr);
         return true;

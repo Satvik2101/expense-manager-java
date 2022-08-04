@@ -15,7 +15,7 @@ public abstract class DatabaseHandler {
 
     }
 
-    public abstract boolean recordTransaction(Transaction transaction);
+    public abstract boolean recordTransaction(Transaction transaction,double newSenderAmount, double newReceiverAmount);
 //    public abstract ArrayList<Transaction> getAccountTransactions(Account account);
     public abstract boolean updateAccountValue(UUID accountID,double newAmount);
 
