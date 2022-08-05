@@ -100,7 +100,7 @@ public abstract class AccountsManager {
 //            return true;
         }
         int compare = tr.getTimestamp().compareTo( transactions.last().getTimestamp());
-         System.out.println(compare);
+//         System.out.println(compare);
         if ((compare >=0)){
 //            System.out.println("here");
             transactions.add(tr);
@@ -109,14 +109,16 @@ public abstract class AccountsManager {
      }
 
     //fetch next page of transactions
-    public void fetchMoreTransactions(){
+    public boolean   fetchMoreTransactions(){
         ArrayList<Transaction> newTransactions = databaseHandler.fetchTransactions(page,countPerPage);
 //        System.out.println(newTransactions.size());
-        if (newTransactions==null || newTransactions.isEmpty())return ;
+        if (newTransactions==null || newTransactions.isEmpty())return false;
         transactions.addAll(newTransactions);
 
         page++;
+        return true;
     }
+
     public void fetchAccounts(){
         ArrayList<Account> newAccounts = databaseHandler.fetchAccounts();
         if (newAccounts==null)return;

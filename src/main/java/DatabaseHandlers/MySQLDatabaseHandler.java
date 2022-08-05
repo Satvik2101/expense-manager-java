@@ -95,6 +95,40 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
 
     @Override
     public ArrayList<Transaction> fetchTransactions(int page, int count) {
+        ArrayList<Transaction> ans = new ArrayList<>();
+        int skip = (page-1)*count;
+        String sql = "Select * from transactions order by time desc limit ? offset ?";
+        try(Connection conn = DriverManager.getConnection(connUrl);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+                ) {
+            stmt.setInt(1,count);
+            stmt.setInt(2,skip);
+            try(ResultSet rs = stmt.executeQuery()) {
+                if (rs == null) return ans;
+                while (rs.next()) {
+                    String rawId = rs.getString("id");
+                    String rawSenderId = rs.getString("sender_id");
+                    String rawReceiverId = rs.getString("receiver_id");
+                    String name = rs.getString("name");
+                    String description = rs.getString("description");
+                    Timestamp time = rs.getTimestamp("time");
+                    double amount = rs.getDouble("amount");
+                    Transaction tr = new Transaction(rawId,
+                                                     rawSenderId,
+                                                     rawReceiverId,
+                                                     name,
+                                                     time,
+                                                     description,
+                                                     amount
+                    );
+                    ans.add(tr);
+                }
+            }
+            return ans;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return null;
     }
 

@@ -3,6 +3,7 @@ package Transaction;
 import Account.Account;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Transaction implements Comparable <Transaction>{
@@ -57,19 +58,40 @@ public class Transaction implements Comparable <Transaction>{
     Timestamp timestamp;
     String description;
     final double amount;
+
     public Transaction(
+            UUID id,
             UUID senderId,
             UUID receiverId,
             String name,
             Timestamp timestamp,
             String description, double amount) {
         this.amount = amount;
-        this.id = UUID.randomUUID();
+        this.id = id;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.name = name;
         this.timestamp = timestamp;
         this.description = description;
+    }
+    public Transaction(
+            UUID senderId,
+            UUID receiverId,
+            String name,
+            Timestamp timestamp,
+            String description, double amount) {
+        this(UUID.randomUUID(),senderId,receiverId,name,timestamp,description,amount);
+
+    }
+
+    public Transaction(String rawId, String rawSenderId, String rawReceiverId, String name, Timestamp time,
+                       String description,
+                       double amount){
+
+        this(UUID.fromString(rawId),
+             UUID.fromString(rawSenderId),
+             UUID.fromString(rawReceiverId),name,time,description,amount);
+
     }
     public boolean isOfAccount(Account acc){
         return (senderId == acc.id || receiverId == acc.id);
@@ -90,5 +112,18 @@ public class Transaction implements Comparable <Transaction>{
         int timeCompare= o.timestamp.compareTo(timestamp);
         if (timeCompare!=0)return timeCompare;
         return id.compareTo(o.id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
