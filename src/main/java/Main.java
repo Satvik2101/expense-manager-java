@@ -51,7 +51,7 @@ public class Main {
            }
            System.out.println("--------------------------------------------");
        }
-       while ((fetchMore=in.nextInt())==1 && manager.fetchMoreTransactions());
+       while ((fetchMore=in.nextInt())==1 && manager.fetchMoreTransactions()!=null);
     }
 
 }

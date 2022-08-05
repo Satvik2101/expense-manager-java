@@ -109,14 +109,14 @@ public abstract class AccountsManager {
      }
 
     //fetch next page of transactions
-    public boolean   fetchMoreTransactions(){
+    public ArrayList<Transaction>  fetchMoreTransactions(){
         ArrayList<Transaction> newTransactions = databaseHandler.fetchTransactions(page,countPerPage);
 //        System.out.println(newTransactions.size());
-        if (newTransactions==null || newTransactions.isEmpty())return false;
+        if (newTransactions==null || newTransactions.isEmpty())return null;
         transactions.addAll(newTransactions);
 
         page++;
-        return true;
+        return newTransactions;
     }
 
     public void fetchAccounts(){

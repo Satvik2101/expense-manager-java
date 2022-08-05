@@ -31,6 +31,11 @@ public class WelcomePage extends JFrame{
         }
     }
     public WelcomePage() {
+        setTitle("Welcome");
+        setContentPane(panel1);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(300,400);
+//        setVisible(true);
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,8 +44,13 @@ public class WelcomePage extends JFrame{
                 String pwd = String.valueOf(password);
                 if (!login(username,pwd)){
                     JOptionPane.showMessageDialog(loginButton,"Unsuccessful Login");
+
                 }else{
                     JOptionPane.showMessageDialog(loginButton,"Successful Login");
+                    setVisible(false);
+                    HomePage homePage = new HomePage(manager);
+                    homePage.setVisible(true);
+                    dispose();
 
                 }
             }
@@ -49,8 +59,6 @@ public class WelcomePage extends JFrame{
 
     public static void main(String[] args) {
         WelcomePage page = new WelcomePage();
-        page.setTitle("Welcome!");
-        page.setContentPane(page.panel1);
         page.setVisible(true);
     }
 }
