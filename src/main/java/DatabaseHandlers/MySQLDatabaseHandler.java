@@ -21,6 +21,10 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
 
         try  (Connection conn = DriverManager.getConnection(connUrl))
         {
+            //nested so we can use rollback in the catch clause of this
+            //if it wasn't nested, the catch block of the outer try
+            //would not have access to the conn object as it would be closed
+            //before we hit the catch
             try(PreparedStatement stmt = conn.prepareStatement(sql)){
                 conn.setAutoCommit(false);
                 stmt.setString(1,tr.getId().toString());
