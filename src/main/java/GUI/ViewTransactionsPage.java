@@ -54,8 +54,17 @@ public class ViewTransactionsPage extends JFrame {
         fetchMoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("HERE");
+//                System.out.println("HERE");
                 addToTable();
+            }
+        });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                HomePage homePage = new HomePage(mgr);
+                homePage.setVisible(true);
+                dispose();
             }
         });
     }

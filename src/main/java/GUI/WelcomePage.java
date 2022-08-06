@@ -46,7 +46,7 @@ public class WelcomePage extends JFrame{
                     JOptionPane.showMessageDialog(loginButton,"Unsuccessful Login");
 
                 }else{
-                    JOptionPane.showMessageDialog(loginButton,"Successful Login");
+//                    JOptionPane.show/*/MessageDialog(loginButton,"Successful Login");
                     setVisible(false);
                     HomePage homePage = new HomePage(manager);
                     homePage.setVisible(true);

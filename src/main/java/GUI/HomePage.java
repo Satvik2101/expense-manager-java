@@ -13,21 +13,24 @@ public class HomePage extends JFrame {
     private JButton addTransactionButton;
     private JButton viewTransactionsButton;
     private JButton logoutButton;
+    private JButton viewAccountsButton;
 
     HomePage(AccountsManager mgr) {
         super();
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(300,400);
         manager = mgr;
         setContentPane(panel1);
         logoutButton.addActionListener(new LogoutListener());
         viewTransactionsButton.addActionListener(new ViewTransactionsListener());
+        viewAccountsButton.addActionListener(new ViewAccountsListener());
     }
 
     class LogoutListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
-            setSize(300,400);
+
             setVisible(false);
             WelcomePage welcomePage = new WelcomePage();
             welcomePage.setVisible(true);
@@ -41,6 +44,18 @@ public class HomePage extends JFrame {
             ViewTransactionsPage viewTransactionsPage = new ViewTransactionsPage(manager);
             setVisible(false);
             viewTransactionsPage.setVisible(true);
+            dispose();
+        }
+    }
+
+    class ViewAccountsListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            setVisible(false);
+            ViewAccountsPage viewAccountsPage = new ViewAccountsPage(manager);
+            viewAccountsPage.setVisible(true);
             dispose();
         }
     }
