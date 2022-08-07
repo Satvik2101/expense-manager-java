@@ -51,27 +51,20 @@ public class ViewTransactionsPage extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(300,400);
         setTable();
-        fetchMoreButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        fetchMoreButton.addActionListener(e -> {
 //                System.out.println("HERE");
-                addToTable();
-            }
+            addToTable();
         });
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                HomePage homePage = new HomePage(mgr);
-                homePage.setVisible(true);
-                dispose();
-            }
+        backButton.addActionListener(e -> {
+            setVisible(false);
+            HomePage homePage = new HomePage(mgr);
+            homePage.setVisible(true);
+            dispose();
         });
     }
 
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         String[] columns = {"Sender","Receiver","Name","Amount","Timestamp"};
 
         TableModel model = new DefaultTableModel(columns,0);

@@ -24,8 +24,10 @@ public class HomePage extends JFrame {
         logoutButton.addActionListener(new LogoutListener());
         viewTransactionsButton.addActionListener(new ViewTransactionsListener());
         viewAccountsButton.addActionListener(new ViewAccountsListener());
+        addAccountButton.addActionListener(new AddAccountListener());
     }
 
+    //TODO: Add MVC Controller
     class LogoutListener implements ActionListener {
 
         @Override
@@ -59,4 +61,14 @@ public class HomePage extends JFrame {
             dispose();
         }
     }
+    class AddAccountListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AddAccount addAccount = new AddAccount(manager);
+            setVisible(false);
+            addAccount.setVisible(true);
+            dispose();
+        }
+    }
+
 }

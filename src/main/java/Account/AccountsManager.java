@@ -63,9 +63,8 @@ public abstract class AccountsManager {
         return true;
     }
 
-
-    //TODO: Change later to get account type as well
     public void createNewAccount(String name, double amount,String type){
+        if (name==null || type==null) return;
         Account acc = Account.createAccount(name,amount,type);
         addAccount(acc);
     }

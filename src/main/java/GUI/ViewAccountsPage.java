@@ -40,20 +40,16 @@ public class ViewAccountsPage extends JFrame {
         setSize(300,400);
         addAccounts();
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                HomePage homePage = new HomePage(mgr);
-                homePage.setVisible(true);
-                dispose();
-            }
+        backButton.addActionListener(e -> {
+            setVisible(false);
+            HomePage homePage = new HomePage(mgr);
+            homePage.setVisible(true);
+            dispose();
         });
     }
 
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         String[] columns = {"Id","Name","Amount"};
 
         TableModel model = new DefaultTableModel(columns,0);

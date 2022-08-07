@@ -48,6 +48,7 @@
             <constraints/>
             <properties>
               <autoCreateColumnsFromModel value="false"/>
+              <enabled value="false"/>
               <selectionForeground color="-1"/>
               <showVerticalLines value="true"/>
             </properties>
