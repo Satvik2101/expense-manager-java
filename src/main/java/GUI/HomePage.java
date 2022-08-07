@@ -25,6 +25,7 @@ public class HomePage extends JFrame {
         viewTransactionsButton.addActionListener(new ViewTransactionsListener());
         viewAccountsButton.addActionListener(new ViewAccountsListener());
         addAccountButton.addActionListener(new AddAccountListener());
+        addTransactionButton.addActionListener(new AddTransactionListener());
     }
 
     //TODO: Add MVC Controller
@@ -70,5 +71,16 @@ public class HomePage extends JFrame {
             dispose();
         }
     }
+
+    class AddTransactionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AddTransaction addTransaction = new AddTransaction(manager);
+            setVisible(false);
+            addTransaction.setVisible(true);
+            dispose();
+        }
+    }
+
 
 }

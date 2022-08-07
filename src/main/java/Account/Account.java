@@ -60,5 +60,10 @@ public abstract class Account {
         return createAccount(id,name,amount,type);
     }
 
-//    static NullAccount nullAccount = new NullAccount();
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    //    static NullAccount nullAccount = new NullAccount();
 }

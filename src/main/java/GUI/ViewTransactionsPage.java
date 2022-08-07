@@ -6,9 +6,6 @@ import Transaction.Transaction;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -35,8 +32,7 @@ public class ViewTransactionsPage extends JFrame {
             String senderName = mgr.getNameOfUUID(tr.getSenderId());
             String receiverName = mgr.getNameOfUUID(tr.getReceiverId());
             System.out.println(tr.getName());
-            int h = model.getRowCount();
-//            model.setRowCount(h+1);
+
             model.addRow(new Object[]{senderName,receiverName,tr.getName(),tr.getAmount(),tr.getTimestamp()});
 //            transactions.notify();
         }
