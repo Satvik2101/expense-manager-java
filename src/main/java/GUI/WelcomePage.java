@@ -34,7 +34,7 @@ public class WelcomePage extends JFrame{
         setTitle("Welcome");
         setContentPane(panel1);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,400);
+        setSize(300,150);
 //        setVisible(true);
         loginButton.addActionListener(new ActionListener() {
             @Override

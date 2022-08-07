@@ -45,7 +45,7 @@ public class ViewTransactionsPage extends JFrame {
         setTitle("View Transactions");
         setContentPane(panel1);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,400);
+        setSize(800,400);
         setTable();
         fetchMoreButton.addActionListener(e -> {
 //                System.out.println("HERE");

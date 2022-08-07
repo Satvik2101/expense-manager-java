@@ -34,7 +34,7 @@ public class AddTransaction extends JFrame {
         this.mgr = mgr1;
         setContentPane(panel1);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400,200);
+        setSize(400,250);
         setContentPane(panel1);
 
         expenseRadioButton.addActionListener(e -> {
@@ -61,6 +61,7 @@ public class AddTransaction extends JFrame {
                 resetIfNull(receiverComboBox);
             }
         });
+        transferRadioButton.setSelected(true);
 
         backButton.addActionListener( e -> {
             setVisible(false);
