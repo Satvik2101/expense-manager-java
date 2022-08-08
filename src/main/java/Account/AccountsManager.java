@@ -13,8 +13,8 @@ public abstract class AccountsManager {
 //    final Connection conn;
     Map<UUID,Account> accountMap = new HashMap<>();
 
-    static int countPerPage = 3;
-    static int page = 1;
+    public static int countPerPage = 3;
+    public static int page = 1;
 
     public String getNameOfUUID(UUID id){
         if (accountMap.get(id)==null)return null;
@@ -127,5 +127,9 @@ public abstract class AccountsManager {
                 nullAccount = (NullAccount)acc;
             }
         }
+    }
+
+    public  ArrayList<Transaction> getTransactionsOf(UUID accountId,int page, int count){
+        return databaseHandler.getTransactionsOf(accountId, page, count);
     }
 }

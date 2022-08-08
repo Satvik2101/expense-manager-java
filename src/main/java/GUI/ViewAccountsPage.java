@@ -2,16 +2,14 @@ package GUI;
 
 import Account.Account;
 import Account.AccountsManager;
-import Transaction.Transaction;
+import Account.NullAccount;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.UUID;
 
 public class ViewAccountsPage extends JFrame {
     final AccountsManager mgr;
@@ -25,8 +23,9 @@ public class ViewAccountsPage extends JFrame {
         DefaultTableModel model = (DefaultTableModel)accounts.getModel();
         for (Account ac:mgr.getAccounts()){
             System.out.println(ac.name  );
-
-          model.addRow(new Object[]{ac.id,ac.name,ac.amount});
+          if (!(ac instanceof NullAccount)) {
+              model.addRow(new Object[]{ac.id, ac.name, ac.amount});
+          }
         }
         System.out.println(model.getDataVector());
     }
@@ -54,5 +53,20 @@ public class ViewAccountsPage extends JFrame {
 
         TableModel model = new DefaultTableModel(columns,0);
         accounts = new JTable(model);
+        accounts.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 2) {     // to detect doble click events
+                    JTable target = (JTable)me.getSource();
+                    int row = target.rowAtPoint(me.getPoint());
+                    if (row==-1) System.out.println("Negative");
+                    System.out.println(target.getValueAt(row,0));
+                    UUID id =(UUID) target.getValueAt(row,0);
+                    ViewTransactionsPage viewTransactionsPage = new ViewTransactionsPage(mgr,id);
+                    setVisible(false);
+                    viewTransactionsPage.setVisible(true);
+                    dispose();
+                }
+            }
+        });
     }
 }

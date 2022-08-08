@@ -152,4 +152,9 @@ public class DatabaseHandlerTest extends DatabaseHandler {
         }
         return ans;
     }
+
+    @Override
+    public ArrayList<Transaction> getTransactionsOf(UUID id, int page, int count) {
+        return null;
+    }
 }

@@ -20,6 +20,8 @@ public class AddAccount extends JFrame {
     public AddAccount(AccountsManager mgr) {
         setContentPane(panel1);
         this.mgr = mgr;
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(300,150);
         backButton.addActionListener(
                 e -> {
                     setVisible(false);
