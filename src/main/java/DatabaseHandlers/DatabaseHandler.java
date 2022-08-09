@@ -2,6 +2,7 @@ package DatabaseHandlers;
 
 import Account.Account;
 import Transaction.Transaction;
+import javafx.util.Pair;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -26,4 +27,5 @@ public abstract class DatabaseHandler {
 
     public abstract ArrayList<Transaction> getTransactionsOf(UUID id,int page, int count);
     public abstract  ArrayList<String> getCategories();
+    public abstract ArrayList<Pair<String, Double>> getCategoriesWithAmounts();
 }

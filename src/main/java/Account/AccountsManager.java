@@ -2,7 +2,9 @@ package Account;
 
 import DatabaseHandlers.DatabaseHandler;
 import Transaction.Transaction;
+import javafx.util.Pair;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.*;
 //import JOption
@@ -13,7 +15,7 @@ public abstract class AccountsManager {
 //    final Connection conn;
     Map<UUID,Account> accountMap = new HashMap<>();
 
-    public static int countPerPage = 3;
+    public static int countPerPage = Integer.MAX_VALUE;
     public static int page = 1;
 
     public String getNameOfUUID(UUID id){
@@ -136,5 +138,9 @@ public abstract class AccountsManager {
 
     public ArrayList<String> getCategories(){
         return databaseHandler.getCategories();
+    }
+
+    public ArrayList<Pair<String, Double>> getCategoriesWithAmounts(){
+        return databaseHandler.getCategoriesWithAmounts();
     }
 }

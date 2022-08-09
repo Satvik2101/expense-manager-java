@@ -4,6 +4,7 @@ import Account.Account;
 import Account.AccountsManager;
 import Account.CashAccount;
 import Transaction.Transaction;
+import javafx.util.Pair;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class DatabaseHandlerTest extends DatabaseHandler {
                                          new Timestamp(122, 6, 30, 15, 30, 0, 0),
                                          null,
                                          500,
-                                         "category"
+                                         "stationary"
         );
         //create more dummy transactions like this
         dummyTransactions.add(tr);
@@ -53,7 +54,7 @@ public class DatabaseHandlerTest extends DatabaseHandler {
                              new Timestamp(122, 6, 28, 15, 30, 0, 0),
                              null,
                              390,
-                             "category"
+                             "food"
         );
         dummyTransactions.add(tr);
         tr = new Transaction(giftMoney.id, cash.id,
@@ -77,7 +78,7 @@ public class DatabaseHandlerTest extends DatabaseHandler {
                              new Timestamp(122, 6, 24, 16, 30, 0, 0),
                              null,
                              250,
-                             "category"
+                             "food"
         );
         dummyTransactions.add(tr);
         tr = new Transaction(cash.id, nullId,
@@ -85,7 +86,7 @@ public class DatabaseHandlerTest extends DatabaseHandler {
                              new Timestamp(122, 6, 21, 15, 30, 0, 0),
                              null,
                              450,
-                             "category"
+                             "food"
         );
         dummyTransactions.add(tr);
         tr = new Transaction( nullId,cash.id,
@@ -174,5 +175,39 @@ public class DatabaseHandlerTest extends DatabaseHandler {
         return new ArrayList<String>(
                 List.of("Food","Rent","Stationary","category")
         );
+    }
+
+    @Override
+    public ArrayList<Pair<String, Double>> getCategoriesWithAmounts() {
+        double foodAmt = 0;
+        double catAmt =0;
+        double statAmt = 0;
+        double rentAmt = 0;
+
+        for (Transaction tr:dummyTransactions){
+            switch (tr.getCategory()){
+                case "Food":
+                    foodAmt += tr.getAmount();
+                            break;
+                case "Rent":
+                    rentAmt+= tr.getAmount();
+                    break;
+                case "Stationary":
+                    statAmt+=tr.getAmount();
+                    break;
+                case "category":
+                    catAmt+= tr.getAmount();
+                    break;
+                default:
+                    break;
+            }
+        }
+        ArrayList<Pair<String,Double>> ans = new ArrayList<>();
+        ans.add(new Pair("Food",foodAmt));
+        ans.add(new Pair("Rent",rentAmt));
+        ans.add(new Pair("Stationary",statAmt));
+        ans.add(new Pair("category",catAmt));
+
+        return ans;
     }
 }

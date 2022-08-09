@@ -58,6 +58,15 @@ public class WelcomePage extends JFrame{
     }
 
     public static void main(String[] args) {
+        UIManager.LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
+        for (UIManager.LookAndFeelInfo look : looks) {
+            System.out.println(look.getClassName());
+        }
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
         WelcomePage page = new WelcomePage();
         page.setVisible(true);
     }

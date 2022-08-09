@@ -35,7 +35,8 @@ public class ViewTransactionsPage extends JFrame {
             String receiverName = mgr.getNameOfUUID(tr.getReceiverId());
             System.out.println(tr.getName());
 
-            model.addRow(new Object[]{senderName,receiverName,tr.getName(),tr.getAmount(),tr.getTimestamp()});
+            model.addRow(new Object[]{senderName,receiverName,tr.getName(),tr.getAmount(),tr.getCategory(),
+                    tr.getTimestamp()});
 //            transactions.notify();
         }
         System.out.println(model.getDataVector());
@@ -99,7 +100,7 @@ public class ViewTransactionsPage extends JFrame {
 
 
     private void createUIComponents() {
-        String[] columns = {"Sender","Receiver","Name","Amount","Timestamp"};
+        String[] columns = {"Sender","Receiver","Name","Amount","Category","Timestamp"};
 
         TableModel model = new DefaultTableModel(columns,0);
         transactions = new JTable(model);

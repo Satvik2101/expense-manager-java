@@ -14,6 +14,7 @@ public class HomePage extends JFrame {
     private JButton viewTransactionsButton;
     private JButton logoutButton;
     private JButton viewAccountsButton;
+    private JButton viewCategoriesButton;
 
     HomePage(AccountsManager mgr) {
         super();
@@ -26,6 +27,7 @@ public class HomePage extends JFrame {
         viewAccountsButton.addActionListener(new ViewAccountsListener());
         addAccountButton.addActionListener(new AddAccountListener());
         addTransactionButton.addActionListener(new AddTransactionListener());
+        viewCategoriesButton.addActionListener(new ViewCategoriesListener());
     }
 
     //TODO: Add MVC Controller
@@ -78,6 +80,15 @@ public class HomePage extends JFrame {
             AddTransaction addTransaction = new AddTransaction(manager);
             setVisible(false);
             addTransaction.setVisible(true);
+            dispose();
+        }
+    }
+    class ViewCategoriesListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ViewCategories viewCategories = new ViewCategories(manager);
+            setVisible(false);
+            viewCategories.setVisible(true);
             dispose();
         }
     }

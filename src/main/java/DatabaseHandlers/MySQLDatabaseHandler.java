@@ -2,6 +2,7 @@ package DatabaseHandlers;
 
 import Account.Account;
 import Transaction.Transaction;
+import javafx.util.Pair;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -223,6 +224,27 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
 
             }
             return ans;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return ans;
+    }
+
+    @Override
+    public ArrayList<Pair<String, Double>> getCategoriesWithAmounts() {
+        ArrayList<Pair<String, Double>> ans = new ArrayList<>();
+        String sql = "select category,sum(amount) as amount from transactions group by category;";
+        try(
+                Connection conn = DriverManager.getConnection(connUrl);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
+            while   (rs.next()){
+                String cat = rs.getString("category");
+                double amt = rs.getDouble("amount");
+                ans.add(new Pair<>(cat,amt));
+            }
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
