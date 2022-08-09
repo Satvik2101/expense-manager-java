@@ -58,6 +58,7 @@ public class Transaction implements Comparable <Transaction>{
     Timestamp timestamp;
     String description;
     final double amount;
+    final String category;
 
     public Transaction(
             UUID id,
@@ -65,7 +66,7 @@ public class Transaction implements Comparable <Transaction>{
             UUID receiverId,
             String name,
             Timestamp timestamp,
-            String description, double amount) {
+            String description, double amount, String category) {
         this.amount = amount;
         this.id = id;
         this.senderId = senderId;
@@ -73,24 +74,26 @@ public class Transaction implements Comparable <Transaction>{
         this.name = name;
         this.timestamp = timestamp;
         this.description = description;
+        this.category = category;
     }
     public Transaction(
             UUID senderId,
             UUID receiverId,
             String name,
             Timestamp timestamp,
-            String description, double amount) {
-        this(UUID.randomUUID(),senderId,receiverId,name,timestamp,description,amount);
+            String description, double amount, String category) {
+        this(UUID.randomUUID(), senderId, receiverId, name, timestamp, description, amount, category);
 
     }
 
     public Transaction(String rawId, String rawSenderId, String rawReceiverId, String name, Timestamp time,
                        String description,
-                       double amount){
+                       double amount, String category){
 
         this(UUID.fromString(rawId),
              UUID.fromString(rawSenderId),
-             UUID.fromString(rawReceiverId),name,time,description,amount);
+             UUID.fromString(rawReceiverId), name, time, description, amount, category
+        );
 
     }
     public boolean isOfAccount(Account acc){
@@ -104,7 +107,7 @@ public class Transaction implements Comparable <Transaction>{
 
     public Transaction copy(){
 //        Transaction clone = (Transaction) Object.clone();
-        return new Transaction(senderId,receiverId,name,timestamp,description,amount);
+        return new Transaction(senderId, receiverId, name, timestamp, description, amount, category);
     }
 
     @Override
@@ -125,5 +128,9 @@ public class Transaction implements Comparable <Transaction>{
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

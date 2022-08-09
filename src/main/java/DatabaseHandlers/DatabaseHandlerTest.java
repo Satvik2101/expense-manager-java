@@ -7,6 +7,7 @@ import Transaction.Transaction;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.UUID;
 
@@ -42,7 +43,8 @@ public class DatabaseHandlerTest extends DatabaseHandler {
                                          "BatteredBooks Payment",
                                          new Timestamp(122, 6, 30, 15, 30, 0, 0),
                                          null,
-                                         500
+                                         500,
+                                         "category"
         );
         //create more dummy transactions like this
         dummyTransactions.add(tr);
@@ -50,63 +52,72 @@ public class DatabaseHandlerTest extends DatabaseHandler {
                              "Cafe Crew Brew",
                              new Timestamp(122, 6, 28, 15, 30, 0, 0),
                              null,
-                             390
+                             390,
+                             "category"
         );
         dummyTransactions.add(tr);
         tr = new Transaction(giftMoney.id, cash.id,
                              "",
                              new Timestamp(122, 6, 28, 14, 02, 0, 0),
                              null,
-                             1000
+                             1000,
+                             "category"
         );
         dummyTransactions.add(tr);
         tr = new Transaction( nullId,cash.id,
                              "",
                              new Timestamp(122, 6, 24, 15, 40, 0, 0),
                              null,
-                             750
+                             750,
+                              "category"
         );
         dummyTransactions.add(tr);
         tr = new Transaction(cash.id, nullId,
                              "CafeCrewBrew",
                              new Timestamp(122, 6, 24, 16, 30, 0, 0),
                              null,
-                             250
+                             250,
+                             "category"
         );
         dummyTransactions.add(tr);
         tr = new Transaction(cash.id, nullId,
                              "ButterChicken+Naan",
                              new Timestamp(122, 6, 21, 15, 30, 0, 0),
                              null,
-                             450
+                             450,
+                             "category"
         );
         dummyTransactions.add(tr);
         tr = new Transaction( nullId,cash.id,
                              "For chicken",
                              new Timestamp(122, 6, 21, 15, 30, 0, 0),
                              null,
-                             1000
+                             1000,
+                              "category"
         );
         dummyTransactions.add(tr);
         tr = new Transaction(metroCard.id, nullId,
                              "Twice NSP",
                              new Timestamp(122, 6, 20, 12, 30, 0, 0),
                              null,
-                             20
+                             20,
+                             "category"
         );
         dummyTransactions.add(tr);
         tr = new Transaction(cash.id, metroCard.id,
                              "MetroCard Recharge at NSP",
                              new Timestamp(122, 6, 20, 12, 30, 0, 0),
                              null,
-                             300
+                             300,
+                             "category"
         );
         dummyTransactions.add(tr);
         tr = new Transaction(metroCard.id, nullId,
                              "Rithala Twice",
                              new Timestamp(122, 6, 19, 12, 30, 0, 0),
                              null,
-                             40
+                             40,
+                             "category"
         );
         dummyTransactions.add(tr);
 
@@ -156,5 +167,12 @@ public class DatabaseHandlerTest extends DatabaseHandler {
     @Override
     public ArrayList<Transaction> getTransactionsOf(UUID id, int page, int count) {
         return null;
+    }
+
+    @Override
+    public ArrayList<String> getCategories() {
+        return new ArrayList<String>(
+                List.of("Food","Rent","Stationary","category")
+        );
     }
 }

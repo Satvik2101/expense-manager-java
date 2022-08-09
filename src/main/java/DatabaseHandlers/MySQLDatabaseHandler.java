@@ -16,25 +16,34 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
 
     @Override
     public boolean recordTransaction(Transaction tr,double newSenderAmount, double newReceiverAmount) {
-        String sql = "insert into transactions (id,sender_id,receiver_id,name,description,time,amount) values (?,?,?," +
-                "?,?,?,?)";
-
+        String insertTransactionQuery = "insert into transactions (id,sender_id,receiver_id,name,description,time," +
+                "amount,category) values (?,?,?," +
+                "?,?,?,?,?)";
+        String insertCategoryQuery = "insert into categories (category) values (?) on duplicate key update " +
+                "category=category;";
         try  (Connection conn = DriverManager.getConnection(connUrl))
         {
             //nested so we can use rollback in the catch clause of this
             //if it wasn't nested, the catch block of the outer try
             //would not have access to the conn object as it would be closed
             //before we hit the catch
-            try(PreparedStatement stmt = conn.prepareStatement(sql)){
+            try(PreparedStatement insertTrStatement = conn.prepareStatement(insertTransactionQuery);
+                PreparedStatement insertCategoryStatement = conn.prepareStatement(insertCategoryQuery);
+            ){
                 conn.setAutoCommit(false);
-                stmt.setString(1,tr.getId().toString());
-                stmt.setString(2,tr.getSenderId().toString());
-                stmt.setString(3,tr.getReceiverId().toString());
-                stmt.setString(4,tr.getName());
-                stmt.setString(5,tr.getDescription());
-                stmt.setTimestamp(6,tr.getTimestamp());
-                stmt.setDouble(7,tr.getAmount());
-                stmt.executeUpdate();
+                insertTrStatement.setString(1,tr.getId().toString());
+                insertTrStatement.setString(2,tr.getSenderId().toString());
+                insertTrStatement.setString(3,tr.getReceiverId().toString());
+                insertTrStatement.setString(4,tr.getName());
+                insertTrStatement.setString(5,tr.getDescription());
+                insertTrStatement.setTimestamp(6,tr.getTimestamp());
+                insertTrStatement.setDouble(7,tr.getAmount());
+                insertTrStatement.setString(8,tr.getCategory());
+                insertCategoryStatement.setString(1,tr.getCategory());
+//                insertCategoryStatement.get
+                System.out.println(tr.getCategory());
+                insertCategoryStatement.executeUpdate();
+                insertTrStatement.executeUpdate();
                 setAccountValue(tr.getSenderId(),newSenderAmount,conn);
                 setAccountValue(tr.getReceiverId(),newReceiverAmount,conn);
                 conn.commit();
@@ -128,6 +137,7 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
             String name = rs.getString("name");
             String description = rs.getString("description");
             Timestamp time = rs.getTimestamp("time");
+            String category = rs.getString("category");
             double amount = rs.getDouble("amount");
             Transaction tr = new Transaction(rawId,
                                              rawSenderId,
@@ -135,7 +145,8 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
                                              name,
                                              time,
                                              description,
-                                             amount
+                                             amount,
+                                             category
             );
             ans.add(tr);
         }
@@ -196,6 +207,26 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
         }
         return null;
 
+    }
+
+    @Override
+    public ArrayList<String> getCategories() {
+        String sql = "select * from categories";
+        ArrayList<String> ans = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(connUrl);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+        ){
+            while (rs.next()){
+                String cat = rs.getString("category");
+                ans.add(cat);
+
+            }
+            return ans;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return ans;
     }
 
     @Override

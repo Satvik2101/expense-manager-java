@@ -74,9 +74,10 @@ public abstract class AccountsManager {
     //be updated.
      public boolean recordTransaction(
             UUID senderId, UUID receiverId, double amount,
-            String name, String description, Timestamp timestamp
+            String name, String description, Timestamp timestamp,
+            String category
     ){
-        Transaction tr = new Transaction(senderId, receiverId, name, timestamp, description, amount);
+        Transaction tr = new Transaction(senderId, receiverId, name, timestamp, description, amount, category);
         Account sender = accountMap.get(senderId);
         Account receiver = accountMap.get(receiverId);
         if (sender==receiver) return false;
@@ -131,5 +132,9 @@ public abstract class AccountsManager {
 
     public  ArrayList<Transaction> getTransactionsOf(UUID accountId,int page, int count){
         return databaseHandler.getTransactionsOf(accountId, page, count);
+    }
+
+    public ArrayList<String> getCategories(){
+        return databaseHandler.getCategories();
     }
 }

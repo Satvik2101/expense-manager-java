@@ -25,4 +25,5 @@ public abstract class DatabaseHandler {
     public abstract ArrayList<Account> fetchAccounts();
 
     public abstract ArrayList<Transaction> getTransactionsOf(UUID id,int page, int count);
+    public abstract  ArrayList<String> getCategories();
 }

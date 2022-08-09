@@ -28,13 +28,14 @@ public class AddTransaction extends JFrame {
     private JTextField descriptionField;
     private JButton addButton;
     private JButton backButton;
+    private JComboBox<String> categoryComboBox;
     private ButtonGroup transactionTypeGroup;
     final AccountsManager mgr;
     public AddTransaction(AccountsManager mgr1) {
         this.mgr = mgr1;
         setContentPane(panel1);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400,250);
+        setSize(400,300);
         setContentPane(panel1);
 
         expenseRadioButton.addActionListener(e -> {
@@ -79,6 +80,7 @@ public class AddTransaction extends JFrame {
                 Timestamp timestamp= new Timestamp(date.getTime());
                 UUID senderId = ((Account)senderComboBox.getSelectedItem()).id;
                 UUID receiverId = ((Account)receiverComboBox.getSelectedItem()).id;
+                String category = (String) categoryComboBox.getSelectedItem();
                 double amount;
                 try {
                      amount = Double.parseDouble(amountStr);
@@ -87,10 +89,11 @@ public class AddTransaction extends JFrame {
                     JOptionPane.showMessageDialog(addButton,"Invalid amount value");
                     return;
                 }
-                if (!mgr.recordTransaction(senderId,receiverId,amount,name,description,timestamp)){
+                if (!mgr.recordTransaction(senderId,receiverId,amount,name,description,timestamp,category)){
                     JOptionPane.showMessageDialog(addButton,"Transaction not recorded");
                 }else{
                     JOptionPane.showMessageDialog(addButton,"Transaction recorded successfully!");
+                    categoryComboBox.addItem(category);
 
                 }
             }
@@ -125,6 +128,11 @@ public class AddTransaction extends JFrame {
         amountField = new JTextField(10);
         PlainDocument doc = (PlainDocument) amountField.getDocument();
         doc.setDocumentFilter(new DoubleFilter());
+
+        categoryComboBox = new JComboBox<>();
+        for (String cat:mgr.getCategories()){
+            categoryComboBox.addItem(cat);
+        }
 
     }
 }
