@@ -44,6 +44,8 @@ public class AddTransaction extends JFrame {
                 senderComboBox.setEnabled(true);
                 resetIfNull(senderComboBox);
                 receiverComboBox.setSelectedItem(AccountsManager.nullAccount);
+                categoryComboBox.setEnabled(true);
+                categoryComboBox.setSelectedIndex(0);
             }
         });
         incomeRadioButton.addActionListener(e -> {
@@ -52,6 +54,8 @@ public class AddTransaction extends JFrame {
                 receiverComboBox.setEnabled(true);
                 resetIfNull(receiverComboBox);
                 senderComboBox.setSelectedItem(AccountsManager.nullAccount);
+                categoryComboBox.setEnabled(true);
+                categoryComboBox.setSelectedIndex(0);
             }
         });
         transferRadioButton.addActionListener(e -> {
@@ -60,9 +64,12 @@ public class AddTransaction extends JFrame {
                 receiverComboBox.setEnabled(true);
                 resetIfNull(senderComboBox);
                 resetIfNull(receiverComboBox);
+                categoryComboBox.setSelectedItem("transfer");
+                categoryComboBox.setEnabled(false);
             }
         });
-        transferRadioButton.setSelected(true);
+        expenseRadioButton.setSelected(true);
+
 
         backButton.addActionListener( e -> {
             setVisible(false);
