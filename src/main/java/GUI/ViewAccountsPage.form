@@ -33,7 +33,7 @@
           <component id="718c8" class="javax.swing.JTable" binding="accounts" custom-create="true">
             <constraints/>
             <properties>
-              <enabled value="false"/>
+              <enabled value="true"/>
             </properties>
           </component>
         </children>
