@@ -210,4 +210,15 @@ public class DatabaseHandlerTest extends DatabaseHandler {
 
         return ans;
     }
+
+    @Override
+    public ArrayList<Transaction> getTransactionsOfCategory(String cat) {
+        ArrayList<Transaction> ans = new ArrayList<>();
+        for (Transaction tr:dummyTransactions){
+            if (tr.getCategory().equals(cat)){
+                ans.add(tr);
+            }
+        }
+        return ans;
+    }
 }

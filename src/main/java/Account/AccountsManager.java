@@ -143,4 +143,8 @@ public abstract class AccountsManager {
     public ArrayList<Pair<String, Double>> getCategoriesWithAmounts(){
         return databaseHandler.getCategoriesWithAmounts();
     }
+
+    public ArrayList<Transaction> getTransactionsOfCategory(String category){
+        return databaseHandler.getTransactionsOfCategory(category);
+    }
 }

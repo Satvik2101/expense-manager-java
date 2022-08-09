@@ -19,7 +19,7 @@ public class HomePage extends JFrame {
     HomePage(AccountsManager mgr) {
         super();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,150);
+        setSize(300,200);
         manager = mgr;
         setContentPane(panel1);
         logoutButton.addActionListener(new LogoutListener());

@@ -7,6 +7,9 @@ import javafx.util.Pair;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.UUID;
 
 public class ViewCategories extends JFrame{
     private JTable categoriesTable;
@@ -46,5 +49,24 @@ public class ViewCategories extends JFrame{
 
         TableModel model = new DefaultTableModel(columns, 0);
         categoriesTable = new JTable(model);
+
+        categoriesTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 2) {     // to detect doble click events
+                    JTable target = (JTable)me.getSource();
+                    int row = target.rowAtPoint(me.getPoint());
+                    if (row==-1) {
+                        System.out.println("Negative");
+                        return;
+                    }
+                    System.out.println(target.getValueAt(row,0));
+                    String category =(String) target.getValueAt(row, 0);
+                    ViewTransactionsPage viewTransactionsPage = new ViewTransactionsPage(mgr,category);
+                    setVisible(false);
+                    viewTransactionsPage.setVisible(true);
+                    dispose();
+                }
+            }
+        });
     }
 }

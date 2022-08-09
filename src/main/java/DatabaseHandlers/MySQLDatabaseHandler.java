@@ -252,6 +252,23 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
     }
 
     @Override
+    public ArrayList<Transaction> getTransactionsOfCategory(String cat) {
+        String sql = "select * from transactions where category = ?";
+        try (
+                Connection conn = DriverManager.getConnection(connUrl);
+                PreparedStatement stmt = conn.prepareStatement(sql)
+                ) {
+            stmt.setString(1,cat);
+            try (ResultSet rs = stmt.executeQuery()){
+                return transactionFromResultSet(rs);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public boolean addAccount(Account acc) {
         String sql ="insert into accounts (id,name,amount) values (?,?,?)";
 
