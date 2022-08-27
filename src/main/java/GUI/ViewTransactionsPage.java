@@ -1,6 +1,8 @@
 package GUI;
 
 import Account.AccountsManager;
+import GUI.Helpers.NavigableFrame;
+import GUI.Helpers.Navigator;
 import Transaction.Transaction;
 
 import javax.swing.*;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-public class ViewTransactionsPage extends JFrame {
+public class ViewTransactionsPage extends NavigableFrame {
     final AccountsManager mgr;
     private JPanel panel1;
 //    private JButton fetchMoreButton;
@@ -33,30 +35,27 @@ public class ViewTransactionsPage extends JFrame {
         for (Transaction tr:trs){
             String senderName = mgr.getNameOfUUID(tr.getSenderId());
             String receiverName = mgr.getNameOfUUID(tr.getReceiverId());
-            System.out.println(tr.getName());
+            System.out.println("Adding "+tr.getName());
 
             model.addRow(new Object[]{senderName,receiverName,tr.getName(),tr.getAmount(),tr.getCategory(),
                     tr.getTimestamp()});
 //            model.setro
 //            transactions.notify();
+
         }
         System.out.println(model.getDataVector());
     }
 
     public ViewTransactionsPage(AccountsManager mgr) {
-        super();
+        super("View Transactions",800,400);
         this.mgr = mgr;
-        setTitle("View Transactions");
-        setContentPane(panel1);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800,400);
         setTable();
-        backButton.addActionListener(e -> {
-            setVisible(false);
-            HomePage homePage = new HomePage(mgr);
-            homePage.setVisible(true);
-            dispose();
-        });
+        setContentPane(panel1);
+        backButton.addActionListener(
+                e -> {
+                    Navigator.instance().pop();
+                }
+        );
     }
 
     void loadMore(UUID id){
@@ -78,38 +77,29 @@ public class ViewTransactionsPage extends JFrame {
         addFromCollection(lst);
     }
     public ViewTransactionsPage(AccountsManager mgr, UUID id) {
-        super();
+        super("View Transactions of "+mgr.getNameOfUUID(id),800,400);
         this.mgr = mgr;
-        setTitle("View Transactions of "+mgr.getNameOfUUID(id));
         setContentPane(panel1);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800,400);
         page = 1;
         count = AccountsManager.countPerPage;
         loadMore(id);
         backButton.addActionListener(e -> {
-            setVisible(false);
-            ViewAccountsPage viewAccountsPage = new ViewAccountsPage(mgr);
-            viewAccountsPage.setVisible(true);
-            dispose();
+            Navigator.instance().pop();
         });
     }
 
     public ViewTransactionsPage(AccountsManager mgr, String category) {
-        super();
+        super("View Transactions of "+category,800,400);
+
         this.mgr = mgr;
-        setTitle("View Transactions of "+category);
         setContentPane(panel1);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800,400);
+
+
         page = 1;
         count = AccountsManager.countPerPage;
         loadMore(category);
         backButton.addActionListener(e -> {
-            setVisible(false);
-            ViewCategories viewCategories = new ViewCategories(mgr);
-            viewCategories.setVisible(true);
-            dispose();
+            Navigator.instance().pop();
         });
     }
 

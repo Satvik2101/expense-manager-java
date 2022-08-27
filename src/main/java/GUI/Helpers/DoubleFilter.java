@@ -8,7 +8,6 @@ import javax.swing.text.DocumentFilter;
 public class DoubleFilter extends DocumentFilter {
 
 
-
     @Override
     public void insertString(FilterBypass fb, int offset, String string,
                              AttributeSet attr) throws BadLocationException {
@@ -59,7 +58,7 @@ public class DoubleFilter extends DocumentFilter {
         sb.append(doc.getText(0, doc.getLength()));
         sb.delete(offset, offset + length);
 
-        if (sb.length()==0|| test(sb.toString())) {
+        if (sb.length() == 0 || test(sb.toString())) {
             super.remove(fb, offset, length);
         } else {
             // do nothing

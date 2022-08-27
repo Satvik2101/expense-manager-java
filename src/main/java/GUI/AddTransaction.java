@@ -4,6 +4,8 @@ import Account.AccountsManager;
 import Account.Account;
 import Account.MySQLAccountsManager;
 import GUI.Helpers.DoubleFilter;
+import GUI.Helpers.NavigableFrame;
+import GUI.Helpers.Navigator;
 
 import javax.swing.*;
 import javax.swing.text.PlainDocument;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-public class AddTransaction extends JFrame {
+public class AddTransaction extends NavigableFrame {
     private JPanel panel1;
     private JComboBox<Account> senderComboBox;
     private JComboBox<Account> receiverComboBox;
@@ -32,10 +34,10 @@ public class AddTransaction extends JFrame {
     private ButtonGroup transactionTypeGroup;
     final AccountsManager mgr;
     public AddTransaction(AccountsManager mgr1) {
+        super("Add Transaction", 400, 300);
+
         this.mgr = mgr1;
-        setContentPane(panel1);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400,300);
+
         setContentPane(panel1);
 
         expenseRadioButton.addActionListener(e -> {
@@ -71,12 +73,11 @@ public class AddTransaction extends JFrame {
         expenseRadioButton.setSelected(true);
 
 
-        backButton.addActionListener( e -> {
-            setVisible(false);
-            HomePage homePage = new HomePage(mgr);
-            homePage.setVisible(true);
-            dispose();
-        });
+        backButton.addActionListener(
+                e -> {
+                    Navigator.instance().pop();
+                }
+        );
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,7 +109,7 @@ public class AddTransaction extends JFrame {
     }
 
     void resetIfNull(JComboBox<Account> comboBox){
-        if (comboBox.getSelectedItem()==AccountsManager.nullAccount) {
+        if (comboBox.getSelectedItem().equals(AccountsManager.nullAccount)) {
             comboBox.setSelectedIndex(0);
         }
     }

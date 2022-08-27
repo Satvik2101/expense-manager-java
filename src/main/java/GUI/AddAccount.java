@@ -2,13 +2,15 @@ package GUI;
 
 import Account.AccountsManager;
 import GUI.Helpers.DoubleFilter;
+import GUI.Helpers.NavigableFrame;
+import GUI.Helpers.Navigator;
 
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddAccount extends JFrame {
+public class AddAccount extends NavigableFrame {
     final AccountsManager mgr;
     private JTextField nameField;
     private JTextField amountField;
@@ -18,16 +20,13 @@ public class AddAccount extends JFrame {
     private JPanel panel1;
 
     public AddAccount(AccountsManager mgr) {
+        super("Home",300,200);
         setContentPane(panel1);
         this.mgr = mgr;
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,150);
         backButton.addActionListener(
                 e -> {
-                    setVisible(false);
-                    HomePage homePage = new HomePage(mgr);
-                    homePage.setVisible(true);
-                    dispose();
+                    System.out.println("AddAcc popping");
+                    Navigator.instance().pop();
                 }
         );
 

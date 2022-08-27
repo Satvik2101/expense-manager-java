@@ -2,6 +2,8 @@ package GUI;
 
 import Account.Account;
 import Account.AccountsManager;
+import GUI.Helpers.NavigableFrame;
+import GUI.Helpers.Navigator;
 import javafx.util.Pair;
 
 import javax.swing.*;
@@ -11,7 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.UUID;
 
-public class ViewCategories extends JFrame{
+public class ViewCategories extends NavigableFrame {
     private JTable categoriesTable;
     private JPanel panel1;
     private JButton backButton;
@@ -29,20 +31,19 @@ public class ViewCategories extends JFrame{
         System.out.println(model.getDataVector());
     }
     public ViewCategories(AccountsManager mgr){
-        super();
+        super("View Categories",300,400);
+
         this.mgr = mgr;
-        setTitle("View Categories");
+
         setContentPane(panel1);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,400);
+
 
         addCategories();
-        backButton.addActionListener(e -> {
-            setVisible(false);
-            HomePage homePage = new HomePage(mgr);
-            homePage.setVisible(true);
-            dispose();
-        });
+        backButton.addActionListener(
+                e -> {
+                    Navigator.instance().pop();
+                }
+        );
     }
     private void createUIComponents() {
         String[] columns = {"Name","Amount"};
@@ -62,9 +63,7 @@ public class ViewCategories extends JFrame{
                     System.out.println(target.getValueAt(row,0));
                     String category =(String) target.getValueAt(row, 0);
                     ViewTransactionsPage viewTransactionsPage = new ViewTransactionsPage(mgr,category);
-                    setVisible(false);
-                    viewTransactionsPage.setVisible(true);
-                    dispose();
+                    Navigator.instance().push(viewTransactionsPage);
                 }
             }
         });

@@ -253,7 +253,7 @@ public class MySQLDatabaseHandler extends DatabaseHandler {
 
     @Override
     public ArrayList<Transaction> getTransactionsOfCategory(String cat) {
-        String sql = "select * from transactions where category = ?";
+        String sql = "select * from transactions where category = ? order by time desc";
         try (
                 Connection conn = DriverManager.getConnection(connUrl);
                 PreparedStatement stmt = conn.prepareStatement(sql)

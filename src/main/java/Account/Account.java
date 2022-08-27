@@ -51,6 +51,7 @@ public abstract class Account {
                 return new CashAccount(id,name,amount);
             case Null:
                 return new NullAccount(id);
+            case Infinite: return new InfiniteAccount(id,name);
         }
         return null;
     }
@@ -63,6 +64,13 @@ public abstract class Account {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+//        return super.equals(obj);
+        if (!(obj instanceof Account))return false;
+        return id.equals(((Account)obj).id);
     }
 
     //    static NullAccount nullAccount = new NullAccount();

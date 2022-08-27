@@ -2,6 +2,7 @@ package GUI;
 
 import Account.AccountsManager;
 import Account.MySQLAccountsManager;
+import GUI.Helpers.Navigator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -49,7 +50,7 @@ public class WelcomePage extends JFrame{
 //                    JOptionPane.show/*/MessageDialog(loginButton,"Successful Login");
                     setVisible(false);
                     HomePage homePage = new HomePage(manager);
-                    homePage.setVisible(true);
+                    Navigator.instance().push(homePage);
                     dispose();
 
                 }

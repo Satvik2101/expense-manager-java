@@ -3,6 +3,8 @@ package GUI;
 import Account.Account;
 import Account.AccountsManager;
 import Account.NullAccount;
+import GUI.Helpers.NavigableFrame;
+import GUI.Helpers.Navigator;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -13,7 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.UUID;
 
-public class ViewAccountsPage extends JFrame {
+public class ViewAccountsPage extends NavigableFrame {
     final AccountsManager mgr;
     private JPanel panel1;
     private JButton backButton;
@@ -33,20 +35,17 @@ public class ViewAccountsPage extends JFrame {
     }
 
     public ViewAccountsPage(AccountsManager mgr) {
-        super();
+        super("View Accounts",300,400);
         this.mgr = mgr;
-        setTitle("View Accounts");
         setContentPane(panel1);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,400);
         addAccounts();
 
-        backButton.addActionListener(e -> {
-            setVisible(false);
-            HomePage homePage = new HomePage(mgr);
-            homePage.setVisible(true);
-            dispose();
-        });
+        backButton.addActionListener(
+                e -> {
+                    System.out.println("popping view acc");
+                    Navigator.instance().pop();
+                }
+        );
     }
 
 
@@ -98,9 +97,7 @@ public class ViewAccountsPage extends JFrame {
                     System.out.println(target.getValueAt(row,0));
                     UUID id =(UUID) target.getValueAt(row,0);
                     ViewTransactionsPage viewTransactionsPage = new ViewTransactionsPage(mgr,id);
-                    setVisible(false);
-                    viewTransactionsPage.setVisible(true);
-                    dispose();
+                   Navigator.instance().push(viewTransactionsPage);
                 }
             }
         });

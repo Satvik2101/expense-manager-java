@@ -1,12 +1,14 @@
 package GUI;
 
 import Account.AccountsManager;
+import GUI.Helpers.NavigableFrame;
+import GUI.Helpers.Navigator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HomePage extends JFrame {
+public class HomePage extends NavigableFrame {
     final AccountsManager manager;
     private JPanel panel1;
     private JButton addAccountButton;
@@ -17,9 +19,8 @@ public class HomePage extends JFrame {
     private JButton viewCategoriesButton;
 
     HomePage(AccountsManager mgr) {
-        super();
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,200);
+        super("Home",300,200);
+
         manager = mgr;
         setContentPane(panel1);
         logoutButton.addActionListener(new LogoutListener());
@@ -30,7 +31,6 @@ public class HomePage extends JFrame {
         viewCategoriesButton.addActionListener(new ViewCategoriesListener());
     }
 
-    //TODO: Add MVC Controller
     class LogoutListener implements ActionListener {
 
         @Override
@@ -47,9 +47,7 @@ public class HomePage extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             ViewTransactionsPage viewTransactionsPage = new ViewTransactionsPage(manager);
-            setVisible(false);
-            viewTransactionsPage.setVisible(true);
-            dispose();
+            Navigator.instance().push(viewTransactionsPage);
         }
     }
 
@@ -58,19 +56,15 @@ public class HomePage extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            setVisible(false);
             ViewAccountsPage viewAccountsPage = new ViewAccountsPage(manager);
-            viewAccountsPage.setVisible(true);
-            dispose();
+            Navigator.instance().push(viewAccountsPage);
         }
     }
     class AddAccountListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             AddAccount addAccount = new AddAccount(manager);
-            setVisible(false);
-            addAccount.setVisible(true);
-            dispose();
+           Navigator.instance().push(addAccount);
         }
     }
 
@@ -78,18 +72,14 @@ public class HomePage extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             AddTransaction addTransaction = new AddTransaction(manager);
-            setVisible(false);
-            addTransaction.setVisible(true);
-            dispose();
+           Navigator.instance().push(addTransaction);
         }
     }
     class ViewCategoriesListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             ViewCategories viewCategories = new ViewCategories(manager);
-            setVisible(false);
-            viewCategories.setVisible(true);
-            dispose();
+            Navigator.instance().push(viewCategories);
         }
     }
 

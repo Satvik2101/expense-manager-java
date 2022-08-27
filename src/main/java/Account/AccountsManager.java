@@ -43,6 +43,7 @@ public abstract class AccountsManager {
     }
 
     void putAccountInAccMap(Account acc){
+        if (acc==null)return;
         accountMap.put(acc.id,acc);
     }
     void addAccount(Account acc){
